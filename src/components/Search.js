@@ -1,28 +1,31 @@
-import React, { Component } from 'react';
-import { browserHistory as history } from 'react-router';
-import search from '../assets/search.svg';
+import React, { createRef } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import search from "../assets/search.svg";
 
-class Search extends Component{
+function Search(props) {
+  const inputRef = createRef();
+  const history = useHistory();
+  const location = useLocation();
 
-    submit = (e) => {
-        e.preventDefault();
-        history.push(`/user/${this.refs.input.value}`);
-    }
+  const submit = (e) => {
+    e.preventDefault();
+    history.push(`/user/${inputRef.current.value}`);
+  };
 
-    render(){
-        return(
-            <div className="container">
-                <h4>Enter a Github username</h4>
-                <form onSubmit={this.submit}>
-                    <div className="form-group">
-                        <input className="form-control" type="text" ref="input" required/>
-                        <button className="btn">Search</button>
-                    </div>
-                </form>
-                <img className="search-img" src={search} alt="search"/>
-            </div>
-        )
-    }
+  return (
+    <div className="container">
+      <h4>Enter a Github username</h4>
+      <form onSubmit={submit}>
+        <div className="form-group">
+          <input className="form-control" type="text" ref={inputRef} required />
+          <button className="btn">Search</button>
+        </div>
+      </form>
+      {location.pathname === "/" ? (
+        <img className="search-img" src={search} alt="search" />
+      ) : null}
+    </div>
+  );
 }
 
 export default Search;
